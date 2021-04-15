@@ -7,9 +7,6 @@ public class PlayerController : NetworkBehaviour
     public GameObject bulletPrefab;
     public Transform bulletSpawn;
 
-    public TextMeshProUGUI textBaloon;
-    public TextMeshProUGUI inputField;
-
     void Update()
     {
         if(!isLocalPlayer)
@@ -32,11 +29,6 @@ public class PlayerController : NetworkBehaviour
             if(Input.GetKeyDown(KeyCode.Escape))
             {
                 CmdSetColor(Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f));
-            }
-
-            if(Input.GetKeyDown(KeyCode.Return))
-            {
-                CmdSendText();
             }
         }
     }
@@ -61,21 +53,6 @@ public class PlayerController : NetworkBehaviour
     void RpcChangeColor(Color color)
     {
         GetComponent<MeshRenderer>().material.color = color;
-    }
-
-    [Command]
-    void CmdSendText()
-    {
-        textBaloon.text += inputField.text + "\n";
-        Debug.Log("Text Baloon = " + inputField.text);
-        RpcReceiveText(inputField.text + "\n");
-    }
-
-    [ClientRpc]
-    void RpcReceiveText(string text)
-    {
-        Debug.Log("Text = " + text);
-        textBaloon.text = text;
     }
 
     //FLUXO
